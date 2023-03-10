@@ -73,6 +73,7 @@ function drawCircle(context,entity) {
         fillStyle = entity["colour"];
         strokeStyle = fillStyle;
         arc(x, y, (entity["radius"])?entity["radius"]:50, 0, 2.0 * Math.PI, false);  
+        // stroke();
         fill();                            
     }
 }
@@ -193,7 +194,7 @@ mouse = (function() {
                 var y = pos[1];
 	        self.clicked = 1;
                 self.callListeners(self.mousedowners,x,y,self.clicked,e);
-                //addEntityWithoutName({'x':x,'y':y,'colour':'red'});
+                // addEntityWithoutName({'x':x,'y':y,'colour':'red'});
             }
         },
         mouseup: function(e) {
@@ -262,16 +263,19 @@ mouse.mouseuppers.push(function(x,y,clicked,e) {
 });
 
 mouse.mousedraggers.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'green',
+    addEntityWithoutName({'x':x,'y':y,'colour':'cyan',
                           'radius':10});
 });
 
 
 function update() {
     //XXX: TODO Get the world from the webservice using a XMLHTTPRequest
+    
+    sendJSONXMLHTTPRequest("/world",null,(data)=>{
+        world = data;
+        drawNextFrame();
+    });
     drawFrame();
-    sendJSONXMLHTTPRequest("/world",null,(data)=>{world = data;
-                    drawFrame();});
 }
 
 // 30 frames per second
